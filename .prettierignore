@@ -1,0 +1,15 @@
+dist
+coverage
+
+*.html
+
+**/*.js
+
+!src/**/*.js
+!webpack.config.js
+
+*.md
+
+*.json
+
+.prettierrc

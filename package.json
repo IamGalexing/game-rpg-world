@@ -9,7 +9,7 @@
     "start": "node scripts/start.js",
     "lint": "npx eslint src/**/*.js",
     "prettier": "npx prettier --write .",
-    "dev": "webpack server",
+    "dev": "webpack server -w",
     "prepare": "husky install"
   },
   "repository": {

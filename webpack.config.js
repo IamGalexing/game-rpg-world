@@ -12,7 +12,7 @@ module.exports = {
     sourceMapFilename: 'main.js.map',
   },
   devtool: NODE_ENV === 'development' ? 'source-map' : false,
-  watch: NODE_ENV === 'development',
+  watch: NODE_ENV ? NODE_ENV === 'development' : true,
   watchOptions: {
     ignored: /node_modules/,
     poll: 1000,

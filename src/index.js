@@ -74,7 +74,9 @@ function stopInterval() {
   clearInterval(interval);
 }
 
-function keyDownHandler({ keyCode }) {
+function keyDownHandler(evt) {
+  evt.preventDefault();
+  const { keyCode } = evt;
   if (!isIntervalRun) startInterval();
   switch (keyCode) {
     case 40:
@@ -98,7 +100,9 @@ function keyDownHandler({ keyCode }) {
   }
 }
 
-function keyUpHandler({ keyCode }) {
+function keyUpHandler(evt) {
+  evt.preventDefault();
+  const { keyCode } = evt;
   if (isIntervalRun) stopInterval();
   switch (keyCode) {
     case 40:

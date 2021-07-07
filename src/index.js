@@ -15,19 +15,15 @@ let profileHero = 0;
 
 const shots = 3;
 let cycle = 0;
-let bottomPressed = false;
-let upPressed = false;
-let leftPressed = false;
-let rightPressed = false;
-let pX = 275;
-let pY = 270;
+let keyPressed = null;
+let pX = (canvas.clientWidth - heroW) / 2;
+let pY = (canvas.clientHeight - heroH) / 2;
 let prevX = pX;
 let prevY = pY;
 
 ctx.strokeStyle = 'black';
 ctx.lineWidth = 1;
 ctx.fillStyle = 'green';
-
 ctx.fill();
 ctx.stroke();
 
@@ -37,24 +33,39 @@ let isIntervalRun = false;
 function startInterval() {
   isIntervalRun = true;
   interval = setInterval(() => {
-    if (bottomPressed && pY <= 540) {
-      [prevX, prevY] = [pX, pY];
-      pY += 10;
-      cycle = (cycle + 1) % shots;
-    } else if (upPressed && pY >= 10) {
-      [prevX, prevY] = [pX, pY];
-      pY -= 10;
-      cycle = (cycle + 1) % shots;
-    } else if (leftPressed && pX >= 0) {
-      [prevX, prevY] = [pX, pY];
-      pX -= 10;
-      cycle = (cycle + 1) % shots;
-    } else if (rightPressed && pX <= 560) {
-      [prevX, prevY] = [pX, pY];
-      pX += 10;
-      cycle = (cycle + 1) % shots;
+    switch (keyPressed) {
+      case 40:
+        if (pY <= 540) {
+          [prevX, prevY] = [pX, pY];
+          pY += 10;
+          cycle = (cycle + 1) % shots;
+        }
+        break;
+      case 38:
+        if (pY >= 10) {
+          [prevX, prevY] = [pX, pY];
+          pY -= 10;
+          cycle = (cycle + 1) % shots;
+        }
+        break;
+      case 37:
+        if (pX >= 0) {
+          [prevX, prevY] = [pX, pY];
+          pX -= 10;
+          cycle = (cycle + 1) % shots;
+        }
+        break;
+      case 39:
+        if (pX <= 560) {
+          [prevX, prevY] = [pX, pY];
+          pX += 10;
+          cycle = (cycle + 1) % shots;
+        }
+        break;
+      default:
+        break;
     }
-    ctx.clearRect(prevX, prevY, 48, 48);
+    ctx.clearRect(prevX, prevY, heroW, heroH);
     ctx.drawImage(
       imgHero,
       cycle * heroW,
@@ -63,8 +74,8 @@ function startInterval() {
       heroH,
       pX,
       pY,
-      48,
-      48,
+      heroW,
+      heroH,
     );
   }, 100);
 }
@@ -80,46 +91,30 @@ function keyDownHandler(evt) {
   if (!isIntervalRun) startInterval();
   switch (keyCode) {
     case 40:
-      bottomPressed = true;
+      keyPressed = 40;
       profileHero = 0;
       break;
     case 38:
-      upPressed = true;
+      keyPressed = 38;
       profileHero = 144;
       break;
     case 37:
-      leftPressed = true;
+      keyPressed = 37;
       profileHero = 48;
       break;
     case 39:
-      rightPressed = true;
+      keyPressed = 39;
       profileHero = 96;
       break;
     default:
-      break;
+      keyPressed = keyCode;
   }
 }
 
 function keyUpHandler(evt) {
   evt.preventDefault();
-  const { keyCode } = evt;
   if (isIntervalRun) stopInterval();
-  switch (keyCode) {
-    case 40:
-      bottomPressed = false;
-      break;
-    case 38:
-      upPressed = false;
-      break;
-    case 37:
-      leftPressed = false;
-      break;
-    case 39:
-      rightPressed = false;
-      break;
-    default:
-      break;
-  }
+  keyPressed = null;
 }
 
 imgHero.addEventListener('load', () => {
@@ -133,8 +128,8 @@ imgHero.addEventListener('load', () => {
     heroH,
     pX,
     pY,
-    48,
-    48,
+    heroW,
+    heroH,
   );
   document.addEventListener('keydown', keyDownHandler);
   document.addEventListener('keyup', keyUpHandler);

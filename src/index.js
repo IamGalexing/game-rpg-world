@@ -36,7 +36,6 @@ terrain.addEventListener('load', () => {
     });
   });
 });
-
 // const imgHero = document.createElement('img');
 // imgHero.src = Hero;
 // let profileHero = 0;

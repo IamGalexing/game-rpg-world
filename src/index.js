@@ -1,41 +1,51 @@
 import './index.scss';
-// import Hero from './assets/main-character.png';
 
-import terrainAtlas from './assets/terrain.png';
-import worldCfg from './configs/world.json';
-import sprites from './configs/sprites';
+import ClientGame from './client/ClientGame';
+
+window.addEventListener('load', () => {
+  ClientGame.init({ tagId: 'game' });
+});
+
+//! How to drow map on canvas
+// import terrainAtlas from './assets/terrain.png';
+// import worldCfg from './configs/world.json';
+// import sprites from './configs/sprites';
+
+// const canvas = document.getElementById('game');
+// const ctx = canvas.getContext('2d');
+
+// const heroW = 48;
+// const heroH = 48;
+
+// const terrain = document.createElement('img');
+// terrain.src = terrainAtlas;
+
+// terrain.addEventListener('load', () => {
+//   const { map } = worldCfg;
+//   map.forEach((cfgRow, y) => {
+//     cfgRow.forEach((cfgCell, x) => {
+//       const [sX, sY, sW, sH] = sprites.terrain[cfgCell[0]].frames[0];
+//       ctx.drawImage(
+//         terrain,
+//         sX,
+//         sY,
+//         sW,
+//         sH,
+//         x * heroW,
+//         y * heroH,
+//         heroW,
+//         heroH,
+//       );
+//     });
+//   });
+// });
+
+//! Make hero walk with setInterval
+// import Hero from './assets/main-character.png';
 
 // const gameField = document.querySelector('.canvas-wrap');
 // const loadingTag = document.querySelector('.canvas-wrap h3');
 
-const canvas = document.getElementById('game');
-const ctx = canvas.getContext('2d');
-
-const heroW = 48;
-const heroH = 48;
-
-const terrain = document.createElement('img');
-terrain.src = terrainAtlas;
-
-terrain.addEventListener('load', () => {
-  const { map } = worldCfg;
-  map.forEach((cfgRow, y) => {
-    cfgRow.forEach((cfgCell, x) => {
-      const [sX, sY, sW, sH] = sprites.terrain[cfgCell[0]].frames[0];
-      ctx.drawImage(
-        terrain,
-        sX,
-        sY,
-        sW,
-        sH,
-        x * heroW,
-        y * heroH,
-        heroW,
-        heroH,
-      );
-    });
-  });
-});
 // const imgHero = document.createElement('img');
 // imgHero.src = Hero;
 // let profileHero = 0;
@@ -167,6 +177,7 @@ terrain.addEventListener('load', () => {
 //   document.addEventListener('keyup', keyUpHandler);
 // });
 
+//! Methods how to draw in canvas
 // ctx.strokeStyle = 'red';
 // ctx.lineWidht = 5;
 // ctx.strokeRect(20, 20, 200, 100);

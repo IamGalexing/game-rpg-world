@@ -1,4 +1,4 @@
-import { clamp } from './util';
+import clamp from './util';
 import PositionedObject from './PositionedObject';
 
 class MovableObject extends PositionedObject {
@@ -18,13 +18,15 @@ class MovableObject extends PositionedObject {
         motionStartTime: 0,
         motionProgress: 1,
 
-        clampToMap: true, //  по умолчанию объект не должен вылетать за пределы карты
+        // по умолчанию объект не должен вылетать за пределы карты
+        clampToMap: true,
       },
       cfg,
     );
   }
 
-  animateMotion(time) {
+  // arg 'time' was here
+  animateMotion() {
     if (this.speed) {
       const me = this;
 
@@ -43,9 +45,10 @@ class MovableObject extends PositionedObject {
   }
 
   render(time) {
-    this.speed && this.animateMotion(time);
+    if (this.speed) this.animateMotion(time);
   }
 
+  // eslint-disable-next-line no-unused-vars
   moveTo(x, y, smooth = true, speed = 200) {
     let [newX, newY] = [x, y];
     const { width, height } = this;

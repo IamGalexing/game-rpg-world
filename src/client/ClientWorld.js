@@ -25,7 +25,9 @@ class ClientWorld extends PositionedObject {
   }
 
   init() {
-    const { levelCfg, map, worldWidth, worldHeight } = this;
+    const {
+      levelCfg, map, worldWidth, worldHeight,
+    } = this;
 
     for (let row = 0; row < worldHeight; row += 1) {
       for (let col = 0; col < worldWidth; col += 1) {

@@ -15,20 +15,24 @@ class PositionedObject {
     );
   }
 
-  /**
+  /*
    * Координаты объекта в мире
-   * @param {int} offset_percent_x Сдвиг относительно верхнего левого угла в процентах от размера объекта
-   * @param {int} offset_percent_y Сдвиг относительно верхнего левого угла в процентах от размера объекта
+   * @param {int} offset_percent_x Сдвиг относительно
+   * верхнего левого угла в процентах от размера объекта
+   * @param {int} offset_percent_y Сдвиг относительно
+   * верхнего левого угла в процентах от размера объекта
    */
-  worldPosition(offset_percent_x = 0, offset_percent_y = 0) {
+  worldPosition(offsetPercentX = 0, offsetPercentY = 0) {
     return {
-      x: this.x + (this.width * offset_percent_x) / 100,
-      y: this.y + (this.height * offset_percent_y) / 100,
+      x: this.x + (this.width * offsetPercentX) / 100,
+      y: this.y + (this.height * offsetPercentY) / 100,
     };
   }
 
   worldBounds() {
-    const { x, y, width, height } = this;
+    const {
+      x, y, width, height,
+    } = this;
     return {
       x,
       y,
@@ -37,13 +41,15 @@ class PositionedObject {
     };
   }
 
-  /**
+  /*
    * Координаты объекта относительно окна отображения (канваса)
-   * @param {int} offset_percent_x Сдвиг относительно верхнего левого угла в процентах от размера объекта
-   * @param {int} offset_percent_y Сдвиг относительно верхнего левого угла в процентах от размера объекта
+   * @param {int} offset_percent_x Сдвиг относительно
+   * верхнего левого угла в процентах от размера объекта
+   * @param {int} offset_percent_y Сдвиг относительно
+   * верхнего левого угла в процентах от размера объекта
    */
-  canvasPosition(offset_percent_x = 0, offset_percent_y = 0) {
-    const pos = this.worldPosition(offset_percent_x, offset_percent_y);
+  canvasPosition(offsetPercentX = 0, offsetPercentY = 0) {
+    const pos = this.worldPosition(offsetPercentX, offsetPercentY);
 
     return {
       x: pos.x,

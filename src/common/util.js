@@ -1,6 +1,8 @@
-export function clamp(x, from_x, to_x) {
-  if (x < from_x) x = from_x;
-  if (x > to_x) x = to_x;
+function clamp(x, fromX, toX) {
+  if (x < fromX) x = fromX;
+  if (x > toX) x = toX;
 
   return x;
 }
+
+export default clamp;

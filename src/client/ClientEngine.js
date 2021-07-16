@@ -62,9 +62,7 @@ class ClientEngine {
     });
   }
 
-  renderSpriteFrame({
-    sprite, frame, x, y, w, h,
-  }) {
+  renderSpriteFrame({ sprite, frame, x, y, w, h }) {
     const spriteCfg = this.sprites[sprite[0]][sprite[1]];
     const [fx, fy, fw, fh] = spriteCfg.frames[frame];
     const img = this.images[spriteCfg.img];

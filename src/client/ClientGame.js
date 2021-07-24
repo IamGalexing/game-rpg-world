@@ -38,43 +38,30 @@ class ClientGame {
 
   initKeys() {
     this.engine.input.onKey({
-      ArrowLeft: (keydown) => {
-        if (keydown) {
-          this.player.moveByCellCoord(
-            -1,
-            0,
-            (cell) => cell.findObjectsByType('grass').length,
-          );
-        }
-      },
-      ArrowRight: (keydown) => {
-        if (keydown) {
-          this.player.moveByCellCoord(
-            1,
-            0,
-            (cell) => cell.findObjectsByType('grass').length,
-          );
-        }
-      },
-      ArrowUp: (keydown) => {
-        if (keydown) {
-          this.player.moveByCellCoord(
-            0,
-            -1,
-            (cell) => cell.findObjectsByType('grass').length,
-          );
-        }
-      },
-      ArrowDown: (keydown) => {
-        if (keydown) {
-          this.player.moveByCellCoord(
-            0,
-            1,
-            (cell) => cell.findObjectsByType('grass').length,
-          );
-        }
-      },
+      ArrowLeft: (keydown) => keydown && this.movePlayerToDir('left'),
+      ArrowRight: (keydown) => keydown && this.movePlayerToDir('right'),
+      ArrowUp: (keydown) => keydown && this.movePlayerToDir('up'),
+      ArrowDown: (keydown) => keydown && this.movePlayerToDir('down'),
     });
+  }
+
+  movePlayerToDir(dir) {
+    const dirs = {
+      left: [-1, 0],
+      right: [1, 0],
+      up: [0, -1],
+      down: [0, 1],
+    };
+
+    const { player } = this;
+
+    if (player) {
+      player.moveByCellCoord(
+        dirs[dir][0],
+        dirs[dir][1],
+        (cell) => cell.findObjectsByType('grass').length,
+      );
+    }
   }
 
   static init(cfg) {

@@ -2,14 +2,19 @@ import ClientEngine from './ClientEngine';
 import ClientWorld from './ClientWorld';
 import levelCfg from '../configs/world.json';
 import sprites from '../configs/sprites';
+import gameObjects from '../configs/gameObjects.json';
 
 class ClientGame {
   constructor(cfg) {
-    Object.assign(this, { cfg });
+    Object.assign(this, { cfg, gameObjects, player: null });
 
     this.engine = this.createEngine();
     this.map = this.createWorld();
     this.initEngine();
+  }
+
+  setPlayer(player) {
+    this.player = player;
   }
 
   createEngine() {
@@ -22,11 +27,41 @@ class ClientGame {
 
   initEngine() {
     this.engine.loadSprites(sprites).then(() => {
-      this.engine.on('render', () => {
-        this.map.init();
+      this.map.init();
+      this.engine.on('render', (_, time) => {
+        this.map.render(time);
       });
       this.engine.start();
+      this.initKeys();
     });
+  }
+
+  initKeys() {
+    this.engine.input.onKey({
+      ArrowLeft: (keydown) => keydown && this.movePlayerToDir('left'),
+      ArrowRight: (keydown) => keydown && this.movePlayerToDir('right'),
+      ArrowUp: (keydown) => keydown && this.movePlayerToDir('up'),
+      ArrowDown: (keydown) => keydown && this.movePlayerToDir('down'),
+    });
+  }
+
+  movePlayerToDir(dir) {
+    const dirs = {
+      left: [-1, 0],
+      right: [1, 0],
+      up: [0, -1],
+      down: [0, 1],
+    };
+
+    const { player } = this;
+
+    if (player) {
+      player.moveByCellCoord(
+        dirs[dir][0],
+        dirs[dir][1],
+        (cell) => cell.findObjectsByType('grass').length,
+      );
+    }
   }
 
   static init(cfg) {

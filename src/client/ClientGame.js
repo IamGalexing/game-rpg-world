@@ -18,17 +18,22 @@ class ClientGame {
   }
 
   createEngine() {
-    return new ClientEngine(document.getElementById(this.cfg.tagId));
+    return new ClientEngine(document.getElementById(this.cfg.tagId), this);
   }
 
   createWorld() {
     return new ClientWorld(this, this.engine, levelCfg);
   }
 
+  getWorld() {
+    return this.map;
+  }
+
   initEngine() {
     this.engine.loadSprites(sprites).then(() => {
       this.map.init();
       this.engine.on('render', (_, time) => {
+        this.engine.camera.focusAtGameObject(this.player);
         this.map.render(time);
       });
       this.engine.start();
@@ -55,12 +60,16 @@ class ClientGame {
 
     const { player } = this;
 
-    if (player) {
-      player.moveByCellCoord(
+    if (player && player.motionProgress === 1) {
+      const canMovie = player.moveByCellCoord(
         dirs[dir][0],
         dirs[dir][1],
         (cell) => cell.findObjectsByType('grass').length,
       );
+      if (canMovie) {
+        player.setState(dir);
+        player.once('motion-stopped', () => player.setState('main'));
+      }
     }
   }
 

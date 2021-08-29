@@ -18,4 +18,13 @@ function animateEx(dx, startTime, currentTime, speed, looped = false) {
   return { offset: dx * time, progress: time };
 }
 
-export { clamp, animateEx };
+const normalize = (num) => (num.toString().length > 1 ? num : `0${num}`);
+
+function getTime(date) {
+  const convertDate = new Date(date);
+  return `${normalize(convertDate.getHours())}:${normalize(
+    convertDate.getMinutes(),
+  )}:${normalize(convertDate.getSeconds())}`;
+}
+
+export { clamp, animateEx, getTime };

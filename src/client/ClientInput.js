@@ -13,12 +13,14 @@ class ClientInput {
   }
 
   onKeyDown(e) {
+    e.preventDefault();
     this.keysPressed.add(e.code);
     if (this.keyHandlers[e.code]) this.keyHandlers[e.code](true);
     this.trigger('keydown', e);
   }
 
   onKeyUp(e) {
+    e.preventDefault();
     this.keysPressed.delete(e.code);
     if (this.keyHandlers[e.code]) this.keyHandlers[e.code](false);
     this.trigger('keyup', e);

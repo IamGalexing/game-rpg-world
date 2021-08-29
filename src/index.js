@@ -1,9 +1,19 @@
 import './index.scss';
-
 import ClientGame from './client/ClientGame';
 
+const startGameBlock = document.querySelector('.start-game');
+const nameForm = document.querySelector('#nameForm');
+const nameInput = document.querySelector('#name');
+
+function startGame(e) {
+  e.preventDefault();
+  nameForm.removeEventListener('submit', startGame);
+  startGameBlock.style.display = 'none';
+  ClientGame.init({ tagId: 'game', playerName: nameInput.value || 'mystery' });
+}
+
 window.addEventListener('load', () => {
-  ClientGame.init({ tagId: 'game' });
+  nameForm.addEventListener('submit', startGame);
 });
 
 //! How to drow map on canvas

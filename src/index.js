@@ -1,10 +1,10 @@
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 import './index.scss';
 import ClientGame from './client/ClientGame';
-import { getTime } from './common/util';
+// import { getTime } from './common/util';
 
 window.addEventListener('load', () => {
-  const socket = io('https://jsprochat.herokuapp.com');
+  // const socket = io('https://jsprochat.herokuapp.com');
 
   const startGameBlock = document.querySelector('.start-game');
   const nameForm = document.querySelector('#nameForm');
@@ -13,7 +13,7 @@ window.addEventListener('load', () => {
   const chatWrap = document.querySelector('.chat-wrap');
   const form = document.getElementById('form');
   const input = document.getElementById('input');
-  const message = document.querySelector('.message');
+  // const message = document.querySelector('.message');
 
   function startGame(e) {
     e.preventDefault();
@@ -22,9 +22,13 @@ window.addEventListener('load', () => {
       ClientGame.init({
         tagId: 'game',
         playerName: nameInput.value || 'troll',
+        apiCfg: {
+          url: 'https://jsmarathonpro.herokuapp.com/',
+          path: '/game',
+        },
       });
 
-      socket.emit('start', nameInput.value);
+      // socket.emit('start', nameInput.value);
 
       nameForm.removeEventListener('submit', startGame);
       startGameBlock.remove();
@@ -38,39 +42,39 @@ window.addEventListener('load', () => {
     e.preventDefault();
 
     if (input.value) {
-      socket.emit('chat message', input.value);
+      // socket.emit('chat message', input.value);
       input.value = '';
     }
   });
 
-  socket.on('chat connection', (data) => {
-    message.insertAdjacentHTML(
-      'beforeend',
-      `<p><span class="time">${getTime(
-        data.time,
-      )} </span><span class="toOnline"> ${data.msg}</span></p>`,
-    );
-  });
+  // socket.on('chat connection', (data) => {
+  //   message.insertAdjacentHTML(
+  //     'beforeend',
+  //     `<p><span class="time">${getTime(
+  //       data.time,
+  //     )} </span><span class="toOnline"> ${data.msg}</span></p>`,
+  //   );
+  // });
 
-  socket.on('chat disconnect', (data) => {
-    message.insertAdjacentHTML(
-      'beforeend',
-      `<p><span class="time">${getTime(
-        data.time,
-      )}  </span><span class="toOffline"> ${data.msg}</span></p>`,
-    );
-  });
+  // socket.on('chat disconnect', (data) => {
+  //   message.insertAdjacentHTML(
+  //     'beforeend',
+  //     `<p><span class="time">${getTime(
+  //       data.time,
+  //     )}  </span><span class="toOffline"> ${data.msg}</span></p>`,
+  //   );
+  // });
 
-  socket.on('chat message', (data) => {
-    message.insertAdjacentHTML(
-      'beforeend',
-      `<p><span class="time">${getTime(
-        data.time,
-      )}  </span><strong class="sender"> ${data.name}:</strong> ${
-        data.msg
-      }</p>`,
-    );
-  });
+  // socket.on('chat message', (data) => {
+  //   message.insertAdjacentHTML(
+  //     'beforeend',
+  //     `<p><span class="time">${getTime(
+  //       data.time,
+  //     )}  </span><strong class="sender"> ${data.name}:</strong> ${
+  //       data.msg
+  //     }</p>`,
+  //   );
+  // });
 });
 
 //! How to drow map on canvas

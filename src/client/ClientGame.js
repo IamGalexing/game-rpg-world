@@ -1,15 +1,12 @@
 import ClientEngine from './ClientEngine';
 import ClientWorld from './ClientWorld';
-import levelCfg from '../configs/world.json';
-import sprites from '../configs/sprites';
-import gameObjects from '../configs/gameObjects.json';
 import ClientApi from './ClientApi';
 
 class ClientGame {
   constructor(cfg) {
     Object.assign(this, {
       cfg,
-      gameObjects,
+      gameObjects: cfg.gameObjects,
       player: null,
       players: [],
       api: new ClientApi({
@@ -35,7 +32,7 @@ class ClientGame {
   }
 
   createWorld() {
-    return new ClientWorld(this, this.engine, levelCfg);
+    return new ClientWorld(this, this.engine, this.cfg.world);
   }
 
   getWorld() {
@@ -43,7 +40,7 @@ class ClientGame {
   }
 
   initEngine() {
-    this.engine.loadSprites(sprites).then(() => {
+    this.engine.loadSprites(this.cfg.sprites).then(() => {
       this.map.init();
       this.engine.on('render', (_, time) => {
         if (this.player) {
@@ -56,6 +53,10 @@ class ClientGame {
       this.engine.focus();
       this.api.join(this.cfg.playerName);
     });
+  }
+
+  setPlayers(playersList) {
+    playersList.forEach((player) => this.createPlayer(player));
   }
 
   createCurrentPlayer(playerCfg) {
@@ -97,25 +98,39 @@ class ClientGame {
   }
 
   movePlayerToDir(dir) {
-    const dirs = {
-      left: [-1, 0],
-      right: [1, 0],
-      up: [0, -1],
-      down: [0, 1],
-    };
+    this.api.move(dir);
+    // const dirs = {
+    //   left: [-1, 0],
+    //   right: [1, 0],
+    //   up: [0, -1],
+    //   down: [0, 1],
+    // };
 
-    const { player } = this;
+    // const { player } = this;
 
-    if (player && player.motionProgress === 1) {
-      const canMovie = player.moveByCellCoord(
-        dirs[dir][0],
-        dirs[dir][1],
-        (cell) => cell.findObjectsByType('grass').length,
-      );
-      if (canMovie) {
-        player.setState(dir);
-        player.once('motion-stopped', () => player.setState('main'));
-      }
+    // if (player && player.motionProgress === 1) {
+    // const canMovie = player.moveByCellCoord(
+    //   dirs[dir][0],
+    //   dirs[dir][1],
+    //   (cell) => cell.findObjectsByType('grass').length,
+    // );
+    // if (canMovie) {
+    // player.setState(dir);
+    // player.once('motion-stopped', () => player.setState('main'));
+    // }
+    // }
+  }
+
+  getPlayerById(id) {
+    return this.players[id];
+  }
+
+  removePlayerById(id) {
+    const player = this.getPlayerById(id);
+
+    if (player) {
+      player.detouch();
+      delete this.players[id];
     }
   }
 

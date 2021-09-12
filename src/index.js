@@ -3,7 +3,17 @@ import './index.scss';
 import ClientGame from './client/ClientGame';
 import { getTime } from './common/util';
 
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
+  const world = await fetch(
+    'https://jsmarathonpro.herokuapp.com/api/v1/world',
+  ).then((res) => res.json());
+  const sprites = await fetch(
+    'https://jsmarathonpro.herokuapp.com/api/v1/sprites',
+  ).then((res) => res.json());
+  const gameObjects = await fetch(
+    'https://jsmarathonpro.herokuapp.com/api/v1/gameObjects',
+  ).then((res) => res.json());
+
   const socket = io('https://jsprochat.herokuapp.com');
 
   const startGameBlock = document.querySelector('.start-game');
@@ -15,6 +25,8 @@ window.addEventListener('load', () => {
   const input = document.getElementById('input');
   const message = document.querySelector('.message');
 
+  startGameBlock.style.display = 'flex';
+
   function startGame(e) {
     e.preventDefault();
 
@@ -22,6 +34,13 @@ window.addEventListener('load', () => {
       ClientGame.init({
         tagId: 'game',
         playerName: nameInput.value || 'troll',
+        world,
+        sprites,
+        gameObjects,
+        apiCfg: {
+          url: 'https://jsmarathonpro.herokuapp.com/',
+          path: '/game',
+        },
       });
 
       socket.emit('start', nameInput.value);
@@ -53,6 +72,7 @@ window.addEventListener('load', () => {
   });
 
   socket.on('chat disconnect', (data) => {
+    if (data.msg.includes('undefined')) return;
     message.insertAdjacentHTML(
       'beforeend',
       `<p><span class="time">${getTime(
